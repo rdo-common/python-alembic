@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.3.4
-Release:          3%{?dist}
+Release:          4%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -156,7 +156,7 @@ popd
 %{python_sitelib}/%{modname}/
 %{python_sitelib}/%{modname}-%{version}*
 %{_bindir}/%{modname}
-%{_mandir}/man1/alembic.1
+%{_mandir}/man1/alembic.1*
 
 %if 0%{?with_python3}
 %files -n python3-%{modname}
@@ -164,11 +164,14 @@ popd
 %{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
 %{_bindir}/python3-%{modname}
-%{_mandir}/man1/python3-alembic.1
+%{_mandir}/man1/python3-alembic.1*
 %endif
 
 
 %changelog
+* Fri Aug 31 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-4
+- Correct %%files entries for the man pages.
+
 * Fri Aug 31 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-3
 - Include docs folder in %%doc section.
 - Use help2man to build man pages for executables.
