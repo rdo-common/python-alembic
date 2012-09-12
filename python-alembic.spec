@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.3.4
-Release:          8%{?dist}
+Release:          9%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -25,21 +25,21 @@ Requires:         python-mako
 
 # See if we're building for python earlier than 2.7
 %if %{?rhel}%{!?rhel:0} >= 6
-BuildRequires:    python-sqlalchemy0.7
+BuildRequires:    python-sqlalchemy0.7 >= 0.7.4
 BuildRequires:    python-argparse
 BuildRequires:    python-nose1.1
-Requires:         python-sqlalchemy0.7
+Requires:         python-sqlalchemy0.7 >= 0.7.4
 Requires:         python-argparse
 %else
 BuildRequires:    python-nose
-BuildRequires:    python-sqlalchemy
-Requires:         python-sqlalchemy
+BuildRequires:    python-sqlalchemy >= 0.7.4
+Requires:         python-sqlalchemy >= 0.7.4
 %endif
 
 %if 0%{?with_python3}
 BuildRequires:    python3-devel
 BuildRequires:    python-tools
-BuildRequires:    python3-sqlalchemy
+BuildRequires:    python3-sqlalchemy >= 0.7.4
 BuildRequires:    python3-mako
 BuildRequires:    python3-nose
 %endif
@@ -65,7 +65,7 @@ Documentation and status of Alembic is at http://readthedocs.org/docs/alembic/
 Summary:        A database migration tool for SQLAlchemy
 Group:          Development/Libraries
 
-Requires:         python3-sqlalchemy
+Requires:         python3-sqlalchemy >= 0.7.4
 Requires:         python3-mako
 
 %description -n python3-alembic
@@ -188,6 +188,9 @@ popd
 
 
 %changelog
+* Wed Sep 12 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-9
+- Require at least sqlalchemy 0.7.4.
+
 * Wed Sep 12 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-8
 - Don't install manpages if they don't exist.
 
