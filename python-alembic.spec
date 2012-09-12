@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.3.4
-Release:          6%{?dist}
+Release:          7%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -98,8 +98,6 @@ awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"sql
 mv setup.py.tmp setup.py
 %endif
 
-
-
 %build
 %{__python} setup.py build
 
@@ -110,31 +108,31 @@ pushd %{py3dir}
 popd
 %endif
 
-%if %{?rhel}%{!?rhel:0} <= 6
-%global help2manopts --no-info -s 1
-%else
-%global help2manopts --version-string %{version} --no-info -s 1
-%endif
-
 # Hack around setuptools so we can get access to help strings for help2man
 # Credit for this goes to Toshio Kuratomi 
+%if %{?rhel}%{!?rhel:0} <= 6
+%else
 %{__mkdir_p} bin
 echo 'python -c "import alembic.config; alembic.config.main()" $*' > bin/alembic
 chmod 0755 bin/alembic
-help2man %{help2manopts} bin/alembic > alembic.1
+help2man --version-string %{version} --no-info -s 1 bin/alembic > alembic.1
 
 %if 0%{?with_python3}
 pushd %{py3dir}
 %{__mkdir_p} bin
 echo 'python3 -c "import alembic.config; alembic.config.main()" $*' > bin/python3-alembic
 chmod 0755 bin/python3-alembic
-help2man %{help2manopts} bin/python3-alembic > python3-alembic.1
+help2man --version-string %{version} --no-info -s 1 bin/python3-alembic > python3-alembic.1
 popd
+%endif
 %endif
 
 
 %install
+%if %{?rhel}%{!?rhel:0} <= 6
+%else
 install -d -m 0755 %{buildroot}%{_mandir}/man1
+%endif
 
 %if 0%{?with_python3}
 pushd %{py3dir}
@@ -162,7 +160,11 @@ popd
 %{python_sitelib}/%{modname}/
 %{python_sitelib}/%{modname}-%{version}*
 %{_bindir}/%{modname}
+
+%if %{?rhel}%{!?rhel:0} <= 6
+%else
 %{_mandir}/man1/alembic.1*
+%endif
 
 %if 0%{?with_python3}
 %files -n python3-%{modname}
@@ -170,11 +172,19 @@ popd
 %{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
 %{_bindir}/python3-%{modname}
+
+%if %{?rhel}%{!?rhel:0} <= 6
+%else
 %{_mandir}/man1/python3-alembic.1*
+%endif
+
 %endif
 
 
 %changelog
+* Wed Sep 12 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-7
+- Stop trying to build man pages for el6.
+
 * Wed Sep 12 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-6
 - Typofix.
 
