@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.3.4
-Release:          7%{?dist}
+Release:          8%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -138,12 +138,18 @@ install -d -m 0755 %{buildroot}%{_mandir}/man1
 pushd %{py3dir}
 %{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
 mv %{buildroot}/%{_bindir}/%{modname} %{buildroot}/%{_bindir}/python3-%{modname}
+%if %{?rhel}%{!?rhel:0} <= 6
+%else
 install -m 0644 python3-alembic.1 %{buildroot}%{_mandir}/man1/python3-alembic.1
+%endif
 popd
 %endif
 
 %{__python} setup.py install -O1 --skip-build --root=%{buildroot}
+%if %{?rhel}%{!?rhel:0} <= 6
+%else
 install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
+%endif
 
 %check
 %{__python} setup.py test
@@ -182,6 +188,9 @@ popd
 
 
 %changelog
+* Wed Sep 12 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-8
+- Don't install manpages if they don't exist.
+
 * Wed Sep 12 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-7
 - Stop trying to build man pages for el6.
 
