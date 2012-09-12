@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.3.4
-Release:          4%{?dist}
+Release:          5%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -110,19 +110,25 @@ pushd %{py3dir}
 popd
 %endif
 
+%if %{?rhel}%{!?rhel:0} <= 6
+%global help2manopts --version-string %{version} --no-info -s 1
+%else
+%global help2manopts --no-info -s 1
+%endif
+
 # Hack around setuptools so we can get access to help strings for help2man
 # Credit for this goes to Toshio Kuratomi 
 %{__mkdir_p} bin
 echo 'python -c "import alembic.config; alembic.config.main()" $*' > bin/alembic
 chmod 0755 bin/alembic
-help2man --version-string %{version} --no-info -s 1 bin/alembic > alembic.1
+help2man %{help2manopts} bin/alembic > alembic.1
 
 %if 0%{?with_python3}
 pushd %{py3dir}
 %{__mkdir_p} bin
 echo 'python3 -c "import alembic.config; alembic.config.main()" $*' > bin/python3-alembic
 chmod 0755 bin/python3-alembic
-help2man  --version-string %{version} --no-info -s 1 bin/python3-alembic > python3-alembic.1
+help2man %{help2manopts} bin/python3-alembic > python3-alembic.1
 popd
 %endif
 
@@ -169,6 +175,9 @@ popd
 
 
 %changelog
+* Wed Sep 12 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-5
+- Accomodate older help2man on epel.
+
 * Fri Aug 31 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-4
 - Correct %%files entries for the man pages.
 
