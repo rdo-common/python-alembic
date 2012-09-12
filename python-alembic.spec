@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.3.4
-Release:          5%{?dist}
+Release:          6%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -111,9 +111,9 @@ popd
 %endif
 
 %if %{?rhel}%{!?rhel:0} <= 6
-%global help2manopts --version-string %{version} --no-info -s 1
-%else
 %global help2manopts --no-info -s 1
+%else
+%global help2manopts --version-string %{version} --no-info -s 1
 %endif
 
 # Hack around setuptools so we can get access to help strings for help2man
@@ -175,6 +175,9 @@ popd
 
 
 %changelog
+* Wed Sep 12 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-6
+- Typofix.
+
 * Wed Sep 12 2012 Ralph Bean <rbean@redhat.com> - 0.3.4-5
 - Accomodate older help2man on epel.
 
