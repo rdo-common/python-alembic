@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.3.4
-Release:          10%{?dist}
+Release:          11%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -188,6 +188,9 @@ popd
 
 
 %changelog
+* Fri Feb 22 2013 Ralph Bean <rbean@redhat.com> - 0.3.4-10
+- Rebuilt again for good measure.
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3.4-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
