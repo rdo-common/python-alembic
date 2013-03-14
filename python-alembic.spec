@@ -5,8 +5,8 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.3.4
-Release:          11%{?dist}
+Version:          0.4.2
+Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -189,6 +189,9 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Thu Mar 14 2013 Pádraig Brady <pbrady@redhat.com> - 0.4.2-1
+- Update to 0.4.2
+
 * Fri Feb 22 2013 Ralph Bean <rbean@redhat.com> - 0.3.4-10
 - Rebuilt again for good measure.
 - Disabled python3 tests.. they started failing in rawhide.
