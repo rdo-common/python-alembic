@@ -13,6 +13,7 @@ Group:            Development/Libraries
 License:          MIT
 URL:              http://pypi.python.org/pypi/alembic
 Source0:          http://pypi.python.org/packages/source/a/%{modname}/%{modname}-%{version}.tar.gz
+Patch0:           python-alembic-sqlalchemy-0.7.8.patch
 
 BuildArch:        noarch
 
@@ -86,6 +87,7 @@ Documentation and status of Alembic is at http://readthedocs.org/docs/alembic/
 
 %prep
 %setup -q -n %{modname}-%{version}
+%patch0 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
