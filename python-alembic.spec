@@ -5,7 +5,7 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.4.2
+Version:          0.5.0
 Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
@@ -189,6 +189,9 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Wed Apr 10 2013 Ralph Bean <rbean@redhat.com> - 0.5.0-1
+- Update to 0.5.0
+
 * Thu Mar 14 2013 Pádraig Brady <pbrady@redhat.com> - 0.4.2-1
 - Update to 0.4.2
 
