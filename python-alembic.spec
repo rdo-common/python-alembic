@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.5.0
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -20,8 +20,10 @@ BuildArch:        noarch
 BuildRequires:    help2man
 BuildRequires:    python2-devel
 BuildRequires:    python-mako
+BuildRequires:    python-setuptools
 
 Requires:         python-mako
+Requires:         python-setuptools
 
 # See if we're building for python earlier than 2.7
 %if %{?rhel}%{!?rhel:0} >= 6
@@ -42,6 +44,7 @@ BuildRequires:    python-tools
 BuildRequires:    python3-sqlalchemy >= 0.7.4
 BuildRequires:    python3-mako
 BuildRequires:    python3-nose
+BuildRequires:    python3-setuptools
 %endif
 
 
@@ -67,6 +70,7 @@ Group:          Development/Libraries
 
 Requires:         python3-sqlalchemy >= 0.7.4
 Requires:         python3-mako
+Requires:         python3-setuptools
 
 %description -n python3-alembic
 Alembic is a new database migrations tool, written by the author of
@@ -189,6 +193,10 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Mon Jul 29 2013 Ralph Bean <rbean@redhat.com> - 0.5.0-2
+- Add forgotten dependency on python-setuptools.
+  https://bugzilla.redhat.com/show_bug.cgi?id=989016
+
 * Wed Apr 10 2013 Ralph Bean <rbean@redhat.com> - 0.5.0-1
 - Update to 0.5.0
 
