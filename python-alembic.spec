@@ -6,13 +6,14 @@
 
 Name:             python-alembic
 Version:          0.4.2
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
 License:          MIT
 URL:              http://pypi.python.org/pypi/alembic
 Source0:          http://pypi.python.org/packages/source/a/%{modname}/%{modname}-%{version}.tar.gz
+Patch0:           python-alembic-sqlalchemy-0.7.8.patch
 
 BuildArch:        noarch
 
@@ -86,6 +87,7 @@ Documentation and status of Alembic is at http://readthedocs.org/docs/alembic/
 
 %prep
 %setup -q -n %{modname}-%{version}
+%patch0 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -136,7 +138,7 @@ install -d -m 0755 %{buildroot}%{_mandir}/man1
 
 %if 0%{?with_python3}
 pushd %{py3dir}
-%{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
+%{__python3} setup.py install --skip-build --root=%{buildroot}
 mv %{buildroot}/%{_bindir}/%{modname} %{buildroot}/%{_bindir}/python3-%{modname}
 %if %{?rhel}%{!?rhel:0} <= 6
 %else
@@ -145,8 +147,15 @@ install -m 0644 python3-alembic.1 %{buildroot}%{_mandir}/man1/python3-alembic.1
 popd
 %endif
 
-%{__python} setup.py install -O1 --skip-build --root=%{buildroot}
+%{__python} setup.py install --skip-build --root=%{buildroot}
 %if %{?rhel}%{!?rhel:0} <= 6
+# Modify /usr/bin/alembic to require SQLAlchemy>=0.6
+# Hacky but setuptools only creates this file after setup.py install is run :-(
+# Root cause is that setuptools doesn't recurse the requirements when it processes
+# the __requires__.  It waits until pkg_resources.require('MODULE') is called.
+# Since that isn't done in the entrypoints script, we need to specify the dependency
+# on a specific SQLAlchemy version explicitly.
+sed -i -e "s|__requires__ = 'alembic==0.4.2'|__requires__ = ['alembic==0.4.2', 'SQLAlchemy>=0.6']|" %{buildroot}%{_bindir}/%{modname}
 %else
 install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 %endif
@@ -189,10 +198,14 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Wed May 29 2013 Toshio Kuratomi <toshio@fedoraproject.org> - 0.4.2-2
+- Workaround setuptools to load the correct SQLAlchemy version for
+  the alembic script. https://bugzilla.redhat.com/show_bug.cgi?id=968404
+
 * Thu Mar 14 2013 Pádraig Brady <pbrady@redhat.com> - 0.4.2-1
 - Update to 0.4.2
 
-* Fri Feb 22 2013 Ralph Bean <rbean@redhat.com> - 0.3.4-10
+* Fri Feb 22 2013 Ralph Bean <rbean@redhat.com> - 0.3.4-11
 - Rebuilt again for good measure.
 - Disabled python3 tests.. they started failing in rawhide.
 
