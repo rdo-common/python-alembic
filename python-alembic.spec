@@ -13,7 +13,7 @@ Group:            Development/Libraries
 License:          MIT
 URL:              http://pypi.python.org/pypi/alembic
 Source0:          http://pypi.python.org/packages/source/a/%{modname}/%{modname}-%{version}.tar.gz
-Patch0:           python-alembic-sqlalchemy-0.7.8.patch
+Patch0:           python-alembic-sqlalchemy-0.8.patch
 
 BuildArch:        noarch
 

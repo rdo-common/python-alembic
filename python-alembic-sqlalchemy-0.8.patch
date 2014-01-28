@@ -1,0 +1,12 @@
+diff -Naur alembic-0.4.2.orig/tests/test_mssql.py alembic-0.4.2/tests/test_mssql.py
+--- alembic-0.4.2.orig/tests/test_mssql.py	2013-01-11 16:12:49.000000000 +0000
++++ alembic-0.4.2/tests/test_mssql.py	2014-01-28 12:01:23.674854937 +0000
+@@ -77,7 +77,7 @@
+         context = op_fixture('mssql')
+         op.drop_index('my_idx', 'my_table')
+         # TODO: annoying that SQLA escapes unconditionally
+-        context.assert_contains("DROP INDEX [my_table].my_idx")
++        context.assert_contains("DROP INDEX my_idx ON my_table")
+ 
+     def test_drop_column_w_default(self):
+         context = op_fixture('mssql')
