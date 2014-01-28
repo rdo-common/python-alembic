@@ -1,4 +1,4 @@
-%if 0%{?fedora} > 12 || 0%{?rhel} > 6
+%if 0%{?fedora} > 12
 %global with_python3 1
 %endif
 
@@ -27,7 +27,7 @@ Requires:         python-mako
 Requires:         python-setuptools
 
 # See if we're building for python earlier than 2.7
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 BuildRequires:    python-sqlalchemy0.7 >= 0.7.4
 BuildRequires:    python-argparse
 BuildRequires:    python-nose1.1
@@ -99,7 +99,7 @@ cp -a . %{py3dir}
 %endif
 
 # Make sure that epel/rhel picks up the correct version of sqlalchemy
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"sqlalchemy>=0.6\", \"nose>=0.11\"]; import pkg_resources"}1' setup.py > setup.py.tmp
 mv setup.py.tmp setup.py
 %endif
