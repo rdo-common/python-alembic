@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.6.2
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -21,12 +21,13 @@ BuildRequires:    help2man
 BuildRequires:    python2-devel
 BuildRequires:    python-mako
 BuildRequires:    python-setuptools
+BuildRequires:    python-mock
 
 Requires:         python-mako
 Requires:         python-setuptools
 
 # See if we're building for python earlier than 2.7
-%if %{?rhel}%{!?rhel:0} <= 6
+%if 0%{?rhel} && 0%{?rhel} <= 6
 BuildRequires:    python-sqlalchemy0.7 >= 0.7.4
 BuildRequires:    python-argparse
 BuildRequires:    python-nose1.1
@@ -45,6 +46,7 @@ BuildRequires:    python3-sqlalchemy >= 0.7.4
 BuildRequires:    python3-mako
 BuildRequires:    python3-nose
 BuildRequires:    python3-setuptools
+BuildRequires:    python3-mock
 %endif
 
 
@@ -97,7 +99,7 @@ cp -a . %{py3dir}
 %endif
 
 # Make sure that epel/rhel picks up the correct version of sqlalchemy
-%if %{?rhel}%{!?rhel:0} <= 6
+%if 0%{?rhel} && 0%{?rhel} <= 6
 awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"sqlalchemy>=0.6\", \"nose>=0.11\"]; import pkg_resources"}1' setup.py > setup.py.tmp
 mv setup.py.tmp setup.py
 %endif
@@ -114,12 +116,13 @@ popd
 
 # Hack around setuptools so we can get access to help strings for help2man
 # Credit for this goes to Toshio Kuratomi 
-%if %{?rhel}%{!?rhel:0} <= 6
+%if 0%{?rhel} && 0%{?rhel} <= 6
 %else
 %{__mkdir_p} bin
 echo 'python -c "import alembic.config; alembic.config.main()" $*' > bin/alembic
 chmod 0755 bin/alembic
 help2man --version-string %{version} --no-info -s 1 bin/alembic > alembic.1
+%endif
 
 %if 0%{?with_python3}
 pushd %{py3dir}
@@ -129,11 +132,10 @@ chmod 0755 bin/python3-alembic
 help2man --version-string %{version} --no-info -s 1 bin/python3-alembic > python3-alembic.1
 popd
 %endif
-%endif
 
 
 %install
-%if %{?rhel}%{!?rhel:0} <= 6
+%if 0%{?rhel} && 0%{?rhel} <= 6
 %else
 install -d -m 0755 %{buildroot}%{_mandir}/man1
 %endif
@@ -142,15 +144,12 @@ install -d -m 0755 %{buildroot}%{_mandir}/man1
 pushd %{py3dir}
 %{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
 mv %{buildroot}/%{_bindir}/%{modname} %{buildroot}/%{_bindir}/python3-%{modname}
-%if %{?rhel}%{!?rhel:0} <= 6
-%else
 install -m 0644 python3-alembic.1 %{buildroot}%{_mandir}/man1/python3-alembic.1
-%endif
 popd
 %endif
 
 %{__python} setup.py install -O1 --skip-build --root=%{buildroot}
-%if %{?rhel}%{!?rhel:0} <= 6
+%if 0%{?rhel} && 0%{?rhel} <= 6
 %else
 install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 %endif
@@ -172,7 +171,7 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 %{python_sitelib}/%{modname}-%{version}*
 %{_bindir}/%{modname}
 
-%if %{?rhel}%{!?rhel:0} <= 6
+%if 0%{?rhel} && 0%{?rhel} <= 6
 %else
 %{_mandir}/man1/alembic.1*
 %endif
@@ -183,16 +182,16 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 %{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
 %{_bindir}/python3-%{modname}
-
-%if %{?rhel}%{!?rhel:0} <= 6
-%else
 %{_mandir}/man1/python3-alembic.1*
-%endif
-
 %endif
 
 
 %changelog
+* Tue Jan 28 2014 Ralph Bean <rbean@redhat.com> - 0.6.2-2
+- Simplify some nested conditionals.
+- Attempt a better rhel conditional.
+- Added buildtime dep on python-mock for the test suite.
+
 * Tue Jan 28 2014 Ralph Bean <rbean@redhat.com> - 0.6.2-1
 - Latest upstream.
 
