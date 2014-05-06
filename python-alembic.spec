@@ -5,7 +5,7 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.6.3
+Version:          0.6.5
 Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
@@ -22,7 +22,6 @@ BuildRequires:    python2-devel
 BuildRequires:    python-mako
 BuildRequires:    python-setuptools
 BuildRequires:    python-mock
-
 Requires:         python-mako
 Requires:         python-setuptools
 
@@ -38,6 +37,10 @@ BuildRequires:    python-nose
 BuildRequires:    python-sqlalchemy >= 0.7.4
 Requires:         python-sqlalchemy >= 0.7.4
 %endif
+
+# Just for the tests
+BuildRequires:    python-psycopg2
+BuildRequires:    MySQL-python
 
 %if 0%{?with_python3}
 BuildRequires:    python3-devel
@@ -187,6 +190,9 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Tue May 06 2014 Ralph Bean <rbean@redhat.com> - 0.6.5-1
+- Latest upstream.
+
 * Tue Feb 04 2014 Ralph Bean <rbean@redhat.com> - 0.6.3-1
 - Latest upstream.
 
