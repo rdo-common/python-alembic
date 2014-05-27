@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          0.6.5
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -190,6 +190,9 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Tue May 27 2014 Kalev Lember <kalevlember@gmail.com> - 0.6.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
+
 * Tue May 06 2014 Ralph Bean <rbean@redhat.com> - 0.6.5-1
 - Latest upstream.
 
