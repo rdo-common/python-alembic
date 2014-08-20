@@ -1,12 +1,18 @@
-%if 0%{?fedora} > 12
+%if 0%{?rhel} && 0%{?rhel} <= 6
+%{!?__python2:        %global __python2 /usr/bin/python2}
+%{!?python2_sitelib:  %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?python2_sitearch: %global python2_sitearch %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
+%endif
+
+%if 0%{?fedora}
 %global with_python3 1
 %endif
 
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.6.5
-Release:          3%{?dist}
+Version:          0.6.6
+Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -55,15 +61,14 @@ BuildRequires:    python3-mock
 
 %description
 Alembic is a new database migrations tool, written by the author of
-`SQLAlchemy <http://www.sqlalchemy.org>`_.  A migrations tool offers the
-following functionality:
+SQLAlchemy.  A migrations tool offers the following functionality:
 
 * Can emit ALTER statements to a database in order to change the structure
-of tables and other constructs.
+  of tables and other constructs.
 * Provides a system whereby "migration scripts" may be constructed; each script
-indicates a particular series of steps that can "upgrade" a target database to
-a new version, and optionally a series of steps that can "downgrade"
-similarly, doing the same steps in reverse.
+  indicates a particular series of steps that can "upgrade" a target database
+  to a new version, and optionally a series of steps that can "downgrade"
+  similarly, doing the same steps in reverse.
 * Allows the scripts to execute in some sequential manner.
 
 Documentation and status of Alembic is at http://readthedocs.org/docs/alembic/
@@ -79,15 +84,14 @@ Requires:         python3-setuptools
 
 %description -n python3-alembic
 Alembic is a new database migrations tool, written by the author of
-`SQLAlchemy <http://www.sqlalchemy.org>`_.  A migrations tool offers the
-following functionality:
+SQLAlchemy.  A migrations tool offers the following functionality:
 
 * Can emit ALTER statements to a database in order to change the structure
-of tables and other constructs.
+  of tables and other constructs.
 * Provides a system whereby "migration scripts" may be constructed; each script
-indicates a particular series of steps that can "upgrade" a target database to
-a new version, and optionally a series of steps that can "downgrade"
-similarly, doing the same steps in reverse.
+  indicates a particular series of steps that can "upgrade" a target database
+  to a new version, and optionally a series of steps that can "downgrade"
+  similarly, doing the same steps in reverse.
 * Allows the scripts to execute in some sequential manner.
 
 Documentation and status of Alembic is at http://readthedocs.org/docs/alembic/
@@ -108,7 +112,7 @@ mv setup.py.tmp setup.py
 %endif
 
 %build
-%{__python} setup.py build
+%{__python2} setup.py build
 
 %if 0%{?with_python3}
 /usr/bin/2to3 -w -n %{py3dir}
@@ -151,27 +155,26 @@ install -m 0644 python3-alembic.1 %{buildroot}%{_mandir}/man1/python3-alembic.1
 popd
 %endif
 
-%{__python} setup.py install -O1 --skip-build --root=%{buildroot}
+%{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
 install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 %endif
 
 %check
-%{__python} setup.py test
+%{__python2} setup.py test
 
-# Disable python3 tests for now.
-#%if 0%{?with_python3}
-#pushd %{py3dir}
-#%{__python3} setup.py test
-#popd
-#%endif
+%if 0%{?with_python3}
+pushd %{py3dir}
+%{__python3} setup.py test
+popd
+%endif
 
 
 %files
 %doc README.rst LICENSE CHANGES docs
-%{python_sitelib}/%{modname}/
-%{python_sitelib}/%{modname}-%{version}*
+%{python2_sitelib}/%{modname}/
+%{python2_sitelib}/%{modname}-%{version}*
 %{_bindir}/%{modname}
 
 %if 0%{?rhel} && 0%{?rhel} <= 6
@@ -190,6 +193,12 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Wed Aug 20 2014 Ralph Bean <rbean@redhat.com> - 0.6.6-1
+- Latest upstream.
+- Modernized python macros.
+- Re-enabled python3 tests.
+- Cleaned up the description formatting.
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.6.5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
