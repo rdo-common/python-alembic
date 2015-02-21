@@ -11,7 +11,7 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.6.6
+Version:          0.7.4
 Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
@@ -115,7 +115,6 @@ mv setup.py.tmp setup.py
 %{__python2} setup.py build
 
 %if 0%{?with_python3}
-/usr/bin/2to3 -w -n %{py3dir}
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
@@ -193,6 +192,13 @@ popd
 
 
 %changelog
+* Sat Feb 21 2015 Ralph Bean <rbean@redhat.com> - 0.7.4-1
+- new version
+
+* Sat Feb 21 2015 Ralph Bean <rbean@redhat.com> - 0.7.4-1
+- new version
+- No longer using 2to3.
+
 * Wed Aug 20 2014 Ralph Bean <rbean@redhat.com> - 0.6.6-1
 - Latest upstream.
 - Modernized python macros.
