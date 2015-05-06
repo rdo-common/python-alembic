@@ -11,8 +11,8 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.7.4
-Release:          2%{?dist}
+Version:          0.7.6
+Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -200,6 +200,9 @@ popd
 
 
 %changelog
+* Wed May 06 2015 Ralph Bean <rbean@redhat.com> - 0.7.6-1
+- new version
+
 * Mon Mar 16 2015 Ralph Bean <rbean@redhat.com> - 0.7.4-2
 - Merge in epel7 compat changes to the spec file.
 - Drop patch for epel7, no longer needed with modern upstream.
