@@ -1,0 +1,7 @@
+error: Failed build dependencies:
+	help2man is needed by python-alembic-0.7.6-1.fc23.noarch
+	python-mock is needed by python-alembic-0.7.6-1.fc23.noarch
+	python3-mock is needed by python-alembic-0.7.6-1.fc23.noarch
+	python3-sqlalchemy >= 0.7.4 is needed by python-alembic-0.7.6-1.fc23.noarch
+
+

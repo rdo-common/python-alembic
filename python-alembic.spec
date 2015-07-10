@@ -12,7 +12,7 @@
 
 Name:             python-alembic
 Version:          0.7.6
-Release:          2%{?dist}
+Release:          3%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -201,9 +201,12 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
-* Fri Jul 10 2015 Ralph Bean <rbean@redhat.com> - 0.7.6-2
+* Fri Jul 10 2015 Ralph Bean <rbean@redhat.com> - 0.7.6-3
 - Disable tests until sqlalchemy-1.1 is out.  There's a bug against
   MS sql DBs (likely won't affect us).
+
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.7.6-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
 * Wed May 06 2015 Ralph Bean <rbean@redhat.com> - 0.7.6-1
 - new version
