@@ -11,8 +11,8 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.7.6
-Release:          3%{?dist}
+Version:          0.8.2
+Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -201,6 +201,9 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Wed Aug 26 2015 Ralph Bean <rbean@redhat.com> - 0.8.2-1
+- new version
+
 * Fri Jul 10 2015 Ralph Bean <rbean@redhat.com> - 0.7.6-3
 - Disable tests until sqlalchemy-1.1 is out.  There's a bug against
   MS sql DBs (likely won't affect us).
