@@ -12,7 +12,7 @@
 
 Name:             python-alembic
 Version:          0.8.3
-Release:          2%{?dist}
+Release:          3%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -31,6 +31,7 @@ BuildRequires:    python-mock
 
 Requires:         python-mako
 Requires:         python-setuptools
+Requires:         python-editor
 
 # See if we're building for python earlier than 2.7
 %if 0%{?rhel} && 0%{?rhel} <= 6
@@ -82,6 +83,7 @@ Group:          Development/Libraries
 Requires:         python3-sqlalchemy >= 0.7.4
 Requires:         python3-mako
 Requires:         python3-setuptools
+Requires:         python3-editor
 
 %description -n python3-alembic
 Alembic is a new database migrations tool, written by the author of
@@ -201,6 +203,9 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Tue Nov 24 2015 Ralph Bean <rbean@redhat.com> - 0.8.3-3
+- Add requirement on python-editor.
+
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.8.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
 
