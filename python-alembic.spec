@@ -11,14 +11,14 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.8.6
-Release:          2%{?dist}
+Version:          0.8.7
+Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
 License:          MIT
-URL:              http://pypi.python.org/pypi/alembic
-Source0:          http://pypi.python.org/packages/source/a/%{modname}/%{modname}-%{version}.tar.gz
+URL:              https://pypi.io/project/alembic
+Source0:          https://pypi.io/packages/source/a/%{modname}/%{modname}-%{version}.tar.gz
 
 BuildArch:        noarch
 
@@ -203,6 +203,9 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Wed Jul 27 2016 Ralph Bean <rbean@redhat.com> - 0.8.7-1
+- new version
+
 * Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.8.6-2
 - https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
 
