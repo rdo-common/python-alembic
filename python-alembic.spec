@@ -11,8 +11,8 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.8.10
-Release:          2%{?dist}
+Version:          0.9.0
+Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -203,6 +203,9 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Wed Mar 01 2017 Ralph Bean <rbean@redhat.com> - 0.9.0-1
+- new version
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.10-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
