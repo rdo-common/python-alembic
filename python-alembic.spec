@@ -12,7 +12,7 @@
 
 Name:             python-alembic
 Version:          0.9.1
-Release:          2%{?dist}
+Release:          3%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -29,21 +29,14 @@ BuildRequires:    python-mako
 BuildRequires:    python-setuptools
 BuildRequires:    python-mock
 
-Requires:         python-mako
-Requires:         python-setuptools
-Requires:         python-editor
-
 # See if we're building for python earlier than 2.7
 %if 0%{?rhel} && 0%{?rhel} <= 6
 BuildRequires:    python-sqlalchemy0.7 >= 0.7.4
 BuildRequires:    python-argparse
 BuildRequires:    python-nose1.1
-Requires:         python-sqlalchemy0.7 >= 0.7.4
-Requires:         python-argparse
 %else
 BuildRequires:    python-nose
 BuildRequires:    python-sqlalchemy >= 0.7.4
-Requires:         python-sqlalchemy >= 0.7.4
 %endif
 
 # Just for the tests
@@ -61,43 +54,51 @@ BuildRequires:    python3-mock
 %endif
 
 
-%description
-Alembic is a new database migrations tool, written by the author of
-SQLAlchemy.  A migrations tool offers the following functionality:
-
-* Can emit ALTER statements to a database in order to change the structure
-  of tables and other constructs.
-* Provides a system whereby "migration scripts" may be constructed; each script
-  indicates a particular series of steps that can "upgrade" a target database
-  to a new version, and optionally a series of steps that can "downgrade"
-  similarly, doing the same steps in reverse.
-* Allows the scripts to execute in some sequential manner.
-
+%global _description\
+Alembic is a new database migrations tool, written by the author of\
+SQLAlchemy.  A migrations tool offers the following functionality:\
+\
+* Can emit ALTER statements to a database in order to change the structure\
+  of tables and other constructs.\
+* Provides a system whereby "migration scripts" may be constructed; each script\
+  indicates a particular series of steps that can "upgrade" a target database\
+  to a new version, and optionally a series of steps that can "downgrade"\
+  similarly, doing the same steps in reverse.\
+* Allows the scripts to execute in some sequential manner.\
+\
 Documentation and status of Alembic is at http://readthedocs.org/docs/alembic/
+
+%description %_description
+
+%package -n python2-alembic
+Summary:          %summary
+
+# See if we're building for python earlier than 2.7
+%if 0%{?rhel} && 0%{?rhel} <= 6
+Requires:         python-sqlalchemy0.7 >= 0.7.4
+Requires:         python-argparse
+%else
+Requires:         python-sqlalchemy >= 0.7.4
+%endif
+
+Requires:         python-editor
+Requires:         python-setuptools
+Requires:         python-mako
+%{?python_provide:%python_provide python2-alembic}
+
+%description -n python2-alembic %_description
 
 %if 0%{?with_python3}
 %package -n python3-alembic
-Summary:        A database migration tool for SQLAlchemy
-Group:          Development/Libraries
+Summary:          %summary
 
 Requires:         python3-sqlalchemy >= 0.7.4
 Requires:         python3-mako
 Requires:         python3-setuptools
 Requires:         python3-editor
+%{?python_provide:%python_provide python3-alembic}
 
-%description -n python3-alembic
-Alembic is a new database migrations tool, written by the author of
-SQLAlchemy.  A migrations tool offers the following functionality:
-
-* Can emit ALTER statements to a database in order to change the structure
-  of tables and other constructs.
-* Provides a system whereby "migration scripts" may be constructed; each script
-  indicates a particular series of steps that can "upgrade" a target database
-  to a new version, and optionally a series of steps that can "downgrade"
-  similarly, doing the same steps in reverse.
-* Allows the scripts to execute in some sequential manner.
-
-Documentation and status of Alembic is at http://readthedocs.org/docs/alembic/
+%description -n python3-alembic %_description
 %endif
 
 %prep
@@ -181,7 +182,7 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 #%endif
 
 
-%files
+%files -n python2-alembic
 %doc README.rst LICENSE CHANGES docs
 %{python2_sitelib}/%{modname}/
 %{python2_sitelib}/%{modname}-%{version}*
@@ -203,6 +204,10 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Tue Aug 08 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.9.1-3
+- Python 2 binary package renamed to python2-alembic
+  See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3
+
 * Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
