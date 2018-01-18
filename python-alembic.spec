@@ -11,8 +11,8 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.9.1
-Release:          3%{?dist}
+Version:          0.9.7
+Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -28,6 +28,7 @@ BuildRequires:    python2-devel
 BuildRequires:    python-mako
 BuildRequires:    python-setuptools
 BuildRequires:    python-mock
+BuildRequires:    python-dateutil
 
 # See if we're building for python earlier than 2.7
 %if 0%{?rhel} && 0%{?rhel} <= 6
@@ -51,6 +52,7 @@ BuildRequires:    python3-mako
 BuildRequires:    python3-nose
 BuildRequires:    python3-setuptools
 BuildRequires:    python3-mock
+BuildRequires:    python3-dateutil
 %endif
 
 
@@ -82,6 +84,7 @@ Requires:         python-sqlalchemy >= 0.7.4
 %endif
 
 Requires:         python-editor
+Requires:         python-dateutil
 Requires:         python-setuptools
 Requires:         python-mako
 %{?python_provide:%python_provide python2-alembic}
@@ -96,6 +99,7 @@ Requires:         python3-sqlalchemy >= 0.7.4
 Requires:         python3-mako
 Requires:         python3-setuptools
 Requires:         python3-editor
+Requires:         python3-dateutil
 %{?python_provide:%python_provide python3-alembic}
 
 %description -n python3-alembic %_description
@@ -125,7 +129,7 @@ popd
 %endif
 
 # Hack around setuptools so we can get access to help strings for help2man
-# Credit for this goes to Toshio Kuratomi 
+# Credit for this goes to Toshio Kuratomi
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
 %{__mkdir_p} bin
@@ -204,6 +208,10 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 
 
 %changelog
+* Thu Jan 18 2018 Ralph Bean <rbean@redhat.com> - 0.9.7-1
+- new version
+- New dependency on python-dateutil.
+
 * Tue Aug 08 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.9.1-3
 - Python 2 binary package renamed to python2-alembic
   See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3
