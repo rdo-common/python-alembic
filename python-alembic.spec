@@ -12,7 +12,7 @@
 
 Name:             python-alembic
 Version:          0.9.7
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -29,6 +29,8 @@ BuildRequires:    python-mako
 BuildRequires:    python-setuptools
 BuildRequires:    python-mock
 BuildRequires:    python-dateutil
+BuildRequires:    python-editor
+BuildRequires:    python2-pytest
 
 # See if we're building for python earlier than 2.7
 %if 0%{?rhel} && 0%{?rhel} <= 6
@@ -53,6 +55,8 @@ BuildRequires:    python3-nose
 BuildRequires:    python3-setuptools
 BuildRequires:    python3-mock
 BuildRequires:    python3-dateutil
+BuildRequires:    python3-editor
+BuildRequires:    python3-pytest
 %endif
 
 
@@ -133,36 +137,36 @@ popd
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
 %{__mkdir_p} bin
-echo 'python -c "import alembic.config; alembic.config.main()" $*' > bin/alembic
-chmod 0755 bin/alembic
-help2man --version-string %{version} --no-info -s 1 bin/alembic > alembic.1
+echo 'python2 -c "import alembic.config; alembic.config.main()" $*' > bin/python2-alembic
+chmod 0755 bin/python2-alembic
+help2man --version-string %{version} --no-info -s 1 bin/python2-alembic > python2-alembic.1
 %endif
 
 %if 0%{?with_python3}
 pushd %{py3dir}
 %{__mkdir_p} bin
-echo 'python3 -c "import alembic.config; alembic.config.main()" $*' > bin/python3-alembic
-chmod 0755 bin/python3-alembic
-help2man --version-string %{version} --no-info -s 1 bin/python3-alembic > python3-alembic.1
+echo 'python3 -c "import alembic.config; alembic.config.main()" $*' > bin/alembic
+chmod 0755 bin/alembic
+help2man --version-string %{version} --no-info -s 1 bin/alembic > alembic.1
 popd
 %endif
 
 
 %install
-%if 0%{?rhel} && 0%{?rhel} <= 6
-%else
+
 install -d -m 0755 %{buildroot}%{_mandir}/man1
-%endif
+
+%{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
+mv bin/python2-%{modname} %{buildroot}/%{_bindir}/python2-%{modname}
+install -m 0644 python2-alembic.1 %{buildroot}%{_mandir}/man1/python2-alembic.1
 
 %if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root=%{buildroot}
-mv %{buildroot}/%{_bindir}/%{modname} %{buildroot}/%{_bindir}/python3-%{modname}
-install -m 0644 python3-alembic.1 %{buildroot}%{_mandir}/man1/python3-alembic.1
+install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 popd
 %endif
 
-%{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
 %if 0%{?rhel} && 0%{?rhel} <= 6
 # Modify /usr/bin/alembic to require SQLAlchemy>=0.6
 # Hacky but setuptools only creates this file after setup.py install is run :-(
@@ -170,31 +174,28 @@ popd
 # the __requires__.  It waits until pkg_resources.require('MODULE') is called.
 # Since that isn't done in the entrypoints script, we need to specify the dependency
 # on a specific SQLAlchemy version explicitly.
-sed -i -e "s|__requires__ = 'alembic==0.4.2'|__requires__ = ['alembic==0.4.2', 'SQLAlchemy>=0.6']|" %{buildroot}%{_bindir}/%{modname}
-%else
-install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
+sed -i -e "s|__requires__ = 'alembic==0.4.2'|__requires__ = ['alembic==0.4.2', 'SQLAlchemy>=0.6']|" %{buildroot}%{_bindir}/python2-%{modname}
 %endif
 
-# Disable tests until sqlalchemy-1.1 is out
-#%check
-#%{__python2} setup.py test
-#
-#%if 0%{?with_python3}
-#pushd %{py3dir}
-#%{__python3} setup.py test
-#popd
-#%endif
+%check
+%{__python2} setup.py test
+
+%if 0%{?with_python3}
+pushd %{py3dir}
+%{__python3} setup.py test
+popd
+%endif
 
 
 %files -n python2-alembic
 %doc README.rst LICENSE CHANGES docs
 %{python2_sitelib}/%{modname}/
 %{python2_sitelib}/%{modname}-%{version}*
-%{_bindir}/%{modname}
+%{_bindir}/python2-%{modname}
 
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
-%{_mandir}/man1/alembic.1*
+%{_mandir}/man1/python2-alembic.1*
 %endif
 
 %if 0%{?with_python3}
@@ -202,12 +203,15 @@ install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
 %doc LICENSE README.rst CHANGES docs
 %{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
-%{_bindir}/python3-%{modname}
-%{_mandir}/man1/python3-alembic.1*
+%{_bindir}/%{modname}
+%{_mandir}/man1/alembic.1*
 %endif
 
 
 %changelog
+* Sat Jan 27 2018 Ralph Bean <rbean@redhat.com> - 0.9.7-2
+- The python3-alembic package now provides the alembic executable.
+
 * Thu Jan 18 2018 Ralph Bean <rbean@redhat.com> - 0.9.7-1
 - new version
 - New dependency on python-dateutil.
