@@ -12,7 +12,7 @@
 
 Name:             python-alembic
 Version:          0.9.7
-Release:          2%{?dist}
+Release:          3%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -137,9 +137,10 @@ popd
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
 %{__mkdir_p} bin
-echo 'python2 -c "import alembic.config; alembic.config.main()" $*' > bin/python2-alembic
-chmod 0755 bin/python2-alembic
-help2man --version-string %{version} --no-info -s 1 bin/python2-alembic > python2-alembic.1
+echo 'python2 -c "import alembic.config; alembic.config.main()" $*' > bin/alembic
+chmod 0755 bin/alembic
+help2man --version-string %{version} --no-info -s 1 bin/alembic > python2-alembic.1
+mv bin/alembic bin/python2-alembic
 %endif
 
 %if 0%{?with_python3}
@@ -156,16 +157,22 @@ popd
 
 install -d -m 0755 %{buildroot}%{_mandir}/man1
 
-%{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
-mv bin/python2-%{modname} %{buildroot}/%{_bindir}/python2-%{modname}
-install -m 0644 python2-alembic.1 %{buildroot}%{_mandir}/man1/python2-alembic.1
-
 %if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root=%{buildroot}
-install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
+mv %{buildroot}/%{_bindir}/%{modname} %{buildroot}/%{_bindir}/%{modname}-3
+ln -s %{_bindir}/%{modname}-3 %{buildroot}/%{_bindir}/%{modname}-%{python3_version}
+install -m 0644 alembic.1 %{buildroot}%{_mandir}/man1/alembic-3.1
+ln -s %{_mandir}/man1/alembic-3.1 %{buildroot}%{_mandir}/man1/alembic-%{python3_version}.1
 popd
 %endif
+
+%{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
+ln -s %{_bindir}/%{modname} %{buildroot}/%{_bindir}/%{modname}-2
+ln -s %{_bindir}/%{modname} %{buildroot}/%{_bindir}/%{modname}-%{python2_version}
+install -m 0644 python2-alembic.1 %{buildroot}%{_mandir}/man1/alembic.1
+ln -s %{_mandir}/man1/alembic.1 %{buildroot}%{_mandir}/man1/alembic-2.1
+ln -s %{_mandir}/man1/alembic.1 %{buildroot}%{_mandir}/man1/alembic-%{python2_version}.1
 
 %if 0%{?rhel} && 0%{?rhel} <= 6
 # Modify /usr/bin/alembic to require SQLAlchemy>=0.6
@@ -191,11 +198,15 @@ popd
 %doc README.rst LICENSE CHANGES docs
 %{python2_sitelib}/%{modname}/
 %{python2_sitelib}/%{modname}-%{version}*
-%{_bindir}/python2-%{modname}
+%{_bindir}/%{modname}
+%{_bindir}/%{modname}-2
+%{_bindir}/%{modname}-%{python2_version}
 
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %else
-%{_mandir}/man1/python2-alembic.1*
+%{_mandir}/man1/alembic.1*
+%{_mandir}/man1/alembic-2.1*
+%{_mandir}/man1/alembic-%{python2_version}.1*
 %endif
 
 %if 0%{?with_python3}
@@ -203,12 +214,18 @@ popd
 %doc LICENSE README.rst CHANGES docs
 %{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
-%{_bindir}/%{modname}
-%{_mandir}/man1/alembic.1*
+%{_bindir}/%{modname}-3
+%{_bindir}/%{modname}-%{python3_version}
+%{_mandir}/man1/alembic-3.1*
+%{_mandir}/man1/alembic-%{python3_version}.1*
 %endif
 
 
 %changelog
+* Thu Feb 08 2018 Randy Barlow <bowlofeggs@fedoraproject.org> - 0.9.7-3
+- The python3-alembic package now provides only alembic-3 and alembic-3.y.
+- The python2-alembic package now provides alembic, alembic-2, and alembic-2.y.
+
 * Sat Jan 27 2018 Ralph Bean <rbean@redhat.com> - 0.9.7-2
 - The python3-alembic package now provides the alembic executable.
 
