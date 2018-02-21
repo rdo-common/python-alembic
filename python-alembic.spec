@@ -12,7 +12,7 @@
 
 Name:             python-alembic
 Version:          0.9.7
-Release:          3%{?dist}
+Release:          4%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -25,11 +25,11 @@ BuildArch:        noarch
 
 BuildRequires:    help2man
 BuildRequires:    python2-devel
-BuildRequires:    python-mako
-BuildRequires:    python-setuptools
-BuildRequires:    python-mock
-BuildRequires:    python-dateutil
-BuildRequires:    python-editor
+BuildRequires:    python2-mako
+BuildRequires:    python2-setuptools
+BuildRequires:    python2-mock
+BuildRequires:    python2-dateutil
+BuildRequires:    python2-editor
 BuildRequires:    python2-pytest
 
 # See if we're building for python earlier than 2.7
@@ -38,17 +38,17 @@ BuildRequires:    python-sqlalchemy0.7 >= 0.7.4
 BuildRequires:    python-argparse
 BuildRequires:    python-nose1.1
 %else
-BuildRequires:    python-nose
-BuildRequires:    python-sqlalchemy >= 0.7.4
+BuildRequires:    python2-nose
+BuildRequires:    python2-sqlalchemy >= 0.7.4
 %endif
 
 # Just for the tests
-BuildRequires:    python-psycopg2
-BuildRequires:    MySQL-python
+BuildRequires:    python2-psycopg2
+BuildRequires:    python2-mysql
 
 %if 0%{?with_python3}
 BuildRequires:    python3-devel
-BuildRequires:    python-tools
+BuildRequires:    python2-tools
 BuildRequires:    python3-sqlalchemy >= 0.7.4
 BuildRequires:    python3-mako
 BuildRequires:    python3-nose
@@ -84,13 +84,13 @@ Summary:          %summary
 Requires:         python-sqlalchemy0.7 >= 0.7.4
 Requires:         python-argparse
 %else
-Requires:         python-sqlalchemy >= 0.7.4
+Requires:         python2-sqlalchemy >= 0.7.4
 %endif
 
-Requires:         python-editor
-Requires:         python-dateutil
-Requires:         python-setuptools
-Requires:         python-mako
+Requires:         python2-editor
+Requires:         python2-dateutil
+Requires:         python2-setuptools
+Requires:         python2-mako
 %{?python_provide:%python_provide python2-alembic}
 
 %description -n python2-alembic %_description
@@ -222,6 +222,10 @@ popd
 
 
 %changelog
+* Wed Feb 21 2018 Iryna Shcherbina <ishcherb@redhat.com> - 0.9.7-4
+- Update Python 2 dependency declarations to new packaging standards
+  (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
+
 * Thu Feb 08 2018 Randy Barlow <bowlofeggs@fedoraproject.org> - 0.9.7-3
 - The python3-alembic package now provides only alembic-3 and alembic-3.y.
 - The python2-alembic package now provides alembic, alembic-2, and alembic-2.y.
