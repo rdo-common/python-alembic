@@ -12,7 +12,7 @@
 
 Name:             python-alembic
 Version:          0.9.7
-Release:          4%{?dist}
+Release:          5%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -222,6 +222,9 @@ popd
 
 
 %changelog
+* Sun Jun 17 2018 Miro Hrončok <mhroncok@redhat.com> - 0.9.7-5
+- Rebuilt for Python 3.7
+
 * Wed Feb 21 2018 Iryna Shcherbina <ishcherb@redhat.com> - 0.9.7-4
 - Update Python 2 dependency declarations to new packaging standards
   (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
