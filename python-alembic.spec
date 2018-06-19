@@ -12,7 +12,7 @@
 
 Name:             python-alembic
 Version:          0.9.7
-Release:          5%{?dist}
+Release:          6%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
@@ -222,6 +222,9 @@ popd
 
 
 %changelog
+* Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 0.9.7-6
+- Rebuilt for Python 3.7
+
 * Sun Jun 17 2018 Miro Hrončok <mhroncok@redhat.com> - 0.9.7-5
 - Rebuilt for Python 3.7
 
