@@ -20,6 +20,9 @@ License:          MIT
 URL:              https://pypi.io/project/alembic
 Source0:          https://pypi.io/packages/source/a/%{modname}/%{modname}-%{version}.tar.gz
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=1592127
+Patch0:           https://github.com/zzzeek/alembic/commit/0f87fecb.patch
+
 BuildArch:        noarch
 
 
@@ -110,7 +113,7 @@ Requires:         python3-dateutil
 %endif
 
 %prep
-%setup -q -n %{modname}-%{version}
+%autosetup -p1 -n %{modname}-%{version}
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}

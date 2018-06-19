@@ -1,0 +1,29 @@
+From 0f87fecbf4848d65fb66bfbf8fceb3e1e63ac3ae Mon Sep 17 00:00:00 2001
+From: Mike Bayer <mike_mp@zzzcomputing.com>
+Date: Fri, 18 May 2018 11:11:49 -0400
+Subject: [PATCH] Implement native boolean check constraint flag in test suite
+
+This is based on
+https://github.com/zzzeek/sqlalchemy/commit/d2bacad469c0b07cc707b563e37e835abcf96eb8
+which adds further specificity to SQL Server's boolean behaviors,
+the test suite here expects a CHECK constraint to be rendered.
+
+Change-Id: I2cce018135f292c7eeddcdbc724668ee9d9c9c48
+---
+ alembic/testing/fixtures.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/alembic/testing/fixtures.py b/alembic/testing/fixtures.py
+index e6c16dd..86d40a2 100644
+--- a/alembic/testing/fixtures.py
++++ b/alembic/testing/fixtures.py
+@@ -146,6 +146,9 @@ def assert_contains(self, sql):
+     ctx_dialect = _get_dialect(dialect)
+     if native_boolean is not None:
+         ctx_dialect.supports_native_boolean = native_boolean
++        # this is new as of SQLAlchemy 1.2.7 and is used by SQL Server,
++        # which breaks assumptions in the alembic test suite
++        ctx_dialect.non_native_boolean_check_constraint = True
+     if not as_sql:
+         def execute(stmt, *multiparam, **param):
+             if isinstance(stmt, string_types):
