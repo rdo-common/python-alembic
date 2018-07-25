@@ -1,9 +1,3 @@
-%if 0%{?rhel} && 0%{?rhel} <= 6
-%{!?__python2:        %global __python2 /usr/bin/python2}
-%{!?python2_sitelib:  %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?python2_sitearch: %global python2_sitearch %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
-%endif
-
 %if 0%{?fedora}
 %global with_python3 1
 %endif
@@ -11,20 +5,16 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          0.9.7
-Release:          7%{?dist}
+Version:          1.0.0
+Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 Group:            Development/Libraries
 License:          MIT
 URL:              https://pypi.io/project/alembic
-Source0:          https://pypi.io/packages/source/a/%{modname}/%{modname}-%{version}.tar.gz
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1592127
-Patch0:           https://github.com/zzzeek/alembic/commit/0f87fecb.patch
+Source0:          %pypi_source alembic
 
 BuildArch:        noarch
-
 
 BuildRequires:    help2man
 BuildRequires:    python2-devel
@@ -225,6 +215,9 @@ popd
 
 
 %changelog
+* Wed Jul 25 2018 Pierre-Yves Chibon <pingou@pingoured.fr> - 1.0.0-1
+- Update to 1.0.0
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.7-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
