@@ -6,7 +6,7 @@
 
 Name:             python-alembic
 Version:          1.0.0
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 License:          MIT
@@ -214,6 +214,9 @@ popd
 
 
 %changelog
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Wed Jul 25 2018 Pierre-Yves Chibon <pingou@pingoured.fr> - 1.0.0-1
 - Update to 1.0.0
 
