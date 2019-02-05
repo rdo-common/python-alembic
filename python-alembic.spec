@@ -11,17 +11,17 @@ Summary:          Database migration tool for SQLAlchemy
 
 License:          MIT
 URL:              https://pypi.io/project/alembic
-Source0:          %pypi_source alembic
+Source0:          https://files.pythonhosted.org/packages/source/a/%{modname}/%{modname}-%{version}.tar.gz
 
 BuildArch:        noarch
 
 BuildRequires:    help2man
 BuildRequires:    python2-devel
-BuildRequires:    python2-mako
+BuildRequires:    python-mako
 BuildRequires:    python2-setuptools
 BuildRequires:    python2-mock
 BuildRequires:    python2-dateutil
-BuildRequires:    python2-editor
+BuildRequires:    python-editor
 BuildRequires:    python2-pytest
 
 # See if we're building for python earlier than 2.7
@@ -35,8 +35,8 @@ BuildRequires:    python2-sqlalchemy >= 0.7.4
 %endif
 
 # Just for the tests
-BuildRequires:    python2-psycopg2
-BuildRequires:    python2-mysql
+BuildRequires:    python-psycopg2
+#BuildRequires:    python2-mysql
 
 %if 0%{?with_python3}
 BuildRequires:    python3-devel
@@ -79,10 +79,10 @@ Requires:         python-argparse
 Requires:         python2-sqlalchemy >= 0.9.0
 %endif
 
-Requires:         python2-editor
+Requires:         python-editor
 Requires:         python2-dateutil
 Requires:         python2-setuptools
-Requires:         python2-mako
+Requires:         python-mako
 %{?python_provide:%python_provide python2-alembic}
 
 %description -n python2-alembic %_description
