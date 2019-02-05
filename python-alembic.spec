@@ -5,8 +5,8 @@
 %global modname alembic
 
 Name:             python-alembic
-Version:          1.0.0
-Release:          2%{?dist}
+Version:          1.0.7
+Release:          1%{?dist}
 Summary:          Database migration tool for SQLAlchemy
 
 License:          MIT
@@ -76,7 +76,7 @@ Summary:          %summary
 Requires:         python-sqlalchemy0.7 >= 0.7.4
 Requires:         python-argparse
 %else
-Requires:         python2-sqlalchemy >= 0.7.4
+Requires:         python2-sqlalchemy >= 0.9.0
 %endif
 
 Requires:         python2-editor
@@ -91,7 +91,7 @@ Requires:         python2-mako
 %package -n python3-alembic
 Summary:          %summary
 
-Requires:         python3-sqlalchemy >= 0.7.4
+Requires:         python3-sqlalchemy >= 0.9.0
 Requires:         python3-mako
 Requires:         python3-setuptools
 Requires:         python3-editor
@@ -214,6 +214,9 @@ popd
 
 
 %changelog
+* Tue Feb 05 2019 Alfredo Moralejo <amoralej@redhat.com> - 1.0.7-1
+- Update to 1.0.7
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
